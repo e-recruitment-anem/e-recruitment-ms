@@ -1,0 +1,3 @@
+[submodule "ms-auth"]
+	path = ms-auth
+	url = https://github.com/e-recruitment-anem/ms-auth
