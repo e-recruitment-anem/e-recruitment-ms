@@ -1,7 +1,7 @@
 services:
   e-recruitment-ms-auth:
     container_name: e-recruitment-ms-auth
-    image: e-recruitment-ms-auth
+    image: aymenzitouni/e-recruitment-ms-auth:1.0.0
     environment:
       PORT: ${PORT}
       NODE_ENV: ${NODE_ENV}
