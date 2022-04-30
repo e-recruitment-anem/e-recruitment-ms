@@ -1,3 +1,6 @@
 [submodule "ms-auth"]
 	path = ms-auth
 	url = https://github.com/e-recruitment-anem/ms-auth
+[submodule "ms-job-seekers"]
+	path = ms-job-seekers
+	url = https://github.com/e-recruitment-anem/ms-job-seekers
