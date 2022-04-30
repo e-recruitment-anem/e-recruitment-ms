@@ -1,0 +1,27 @@
+services:
+  e-recruitment-ms-auth:
+    container_name: e-recruitment-ms-auth
+    image: e-recruitment-ms-auth
+    environment:
+      PORT: ${PORT}
+      NODE_ENV: ${NODE_ENV}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      SENDGRID_SENDER_EMAIL: ${SENDGRID_SENDER_EMAIL}
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_HOST: ${REDIS_HOSTNAME}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports:
+      - "5000:5000"
+    restart: always
+  cache:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/data
+volumes:
+  cache:
+    driver: local
