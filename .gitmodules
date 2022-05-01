@@ -4,3 +4,6 @@
 [submodule "ms-job-seekers"]
 	path = ms-job-seekers
 	url = https://github.com/e-recruitment-anem/ms-job-seekers
+[submodule "e-recuitement-dashboard"]
+	path = e-recuitement-dashboard
+	url = https://github.com/e-recruitment-anem/e-recuitement-dashboard
