@@ -7,6 +7,9 @@ networks:
   cache-net:
     name: cache-net
     driver: bridge
+  postgres-net:
+    name: postgres-net
+    driver: bridge
 
 volumes:
   cache:
@@ -64,28 +67,49 @@ services:
     depends_on:
       - "kafka"
 
-  e-recruitment-ms-auth:
-    container_name: e-recruitment-ms-auth
-    image: e-recruitment-ms-auth
-    depends_on:
-      - "cache"
-      - "zookeeper"
-      - "kafka"
-      - "kafdrop"
-    environment:
-      PORT: ${PORT}
-      NODE_ENV: ${NODE_ENV}
-      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
-      SENDGRID_SENDER_EMAIL: ${SENDGRID_SENDER_EMAIL}
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_HOST: ${REDIS_HOSTNAME}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_USERNAME: ${REDIS_USERNAME}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      KAFKA_HOST: kafka:29092
-    networks:
-      - kafka-net
-      - cache-net
-    ports:
-      - "5000:5000"
-    restart: always
+  # ms-job-seekers:
+  #   image: aymenzitouni/ms-job-seekers
+  #   container_name: ms-job-seekers
+  #   restart: always
+  #   networks:
+  #     - kafka-net
+
+  #   environment:
+  #     spring.kafka.consumer.bootstrap-servers: "kafka:29092"
+  #     SPRING_DATASOURCE_URL: ${DATABASE_MS_JOB_SEEKERS_URL}
+  #     SPRING_DATASOURCE_USERNAME: ${DATABASE_MS_JOB_SEEKERS_USERNAME}
+  #     SPRING_DATASOURCE_PASSWORD: ${DATABASE_MS_JOB_SEEKERS_PASSWORD}
+
+  #   ports:
+  #     - "8090:8090"
+
+  #   depends_on:
+  #     - "kafka"
+  #     - "kafdrop"
+  #     - "zookeeper"
+
+  # e-recruitment-ms-auth:
+  #   container_name: e-recruitment-ms-auth
+  #   image: e-recruitment-ms-auth
+  #   depends_on:
+  #     - "cache"
+  #     - "zookeeper"
+  #     - "kafka"
+  #     - "kafdrop"
+  #   environment:
+  #     PORT: ${PORT}
+  #     NODE_ENV: ${NODE_ENV}
+  #     SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+  #     SENDGRID_SENDER_EMAIL: ${SENDGRID_SENDER_EMAIL}
+  #     DATABASE_URL: ${DATABASE_MS_AUTH_URL}
+  #     REDIS_HOST: ${REDIS_HOSTNAME}
+  #     REDIS_PORT: ${REDIS_PORT}
+  #     REDIS_USERNAME: ${REDIS_USERNAME}
+  #     REDIS_PASSWORD: ${REDIS_PASSWORD}
+  #     KAFKA_HOST: kafka:29092
+  #   networks:
+  #     - kafka-net
+  #     - cache-net
+  #   ports:
+  #     - "5000:5000"
+  #   restart: always
