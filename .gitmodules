@@ -7,3 +7,6 @@
 [submodule "e-recuitement-dashboard"]
 	path = e-recuitement-dashboard
 	url = https://github.com/e-recruitment-anem/e-recuitement-dashboard
+[submodule "ms-recommendation-system"]
+	path = ms-recommendation-system
+	url = https://github.com/e-recruitment-anem/ms-recommendation-system
