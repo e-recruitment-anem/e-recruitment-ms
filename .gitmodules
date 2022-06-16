@@ -10,3 +10,9 @@
 [submodule "ms-recommendation-system"]
 	path = ms-recommendation-system
 	url = https://github.com/e-recruitment-anem/ms-recommendation-system
+[submodule "ms-employers"]
+	path = ms-employers
+	url = https://github.com/e-recruitment-anem/ms-employers
+[submodule "ms-nomenclatures"]
+	path = ms-nomenclatures
+	url = https://github.com/e-recruitment-anem/ms-nomenclatures
