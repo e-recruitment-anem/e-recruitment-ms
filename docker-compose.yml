@@ -89,8 +89,8 @@ services:
       - "zookeeper"
 
   e-recruitment-ms-auth:
-    container_name: aymenzitouni/ms-auth
-    image: e-recruitment-ms-auth
+    container_name: e-recruitment-ms-auth
+    image: aymenzitouni/ms-auth
     depends_on:
       - "cache"
       - "zookeeper"
