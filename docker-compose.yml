@@ -18,6 +18,14 @@ services:
     command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     volumes:
       - cache:/data
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: bitnami/elasticsearch
+    ports:
+      - 9300:9300
+      - 9200:9200
+
   zookeeper:
     image: zookeeper:3.7.0
     container_name: zookeeper
@@ -91,3 +99,14 @@ services:
     ports:
       - "5000:5000"
     restart: always
+
+  ms-nomenclatures:
+    container_name: ms-nomenclature
+    image: aymenzitouni/ms-nomenclatures:latest
+
+    depends_on:
+      - "elasticsearch"
+    ports:
+      - 6001:6000
+    environment:
+      - ELASTIC_URL=http://elasticsearch:9200
