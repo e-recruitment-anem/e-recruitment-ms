@@ -1,14 +1,8 @@
 version: "3"
 
 networks:
-  kafka-net:
-    name: kafka-net
-    driver: bridge
-  cache-net:
-    name: cache-net
-    driver: bridge
-  postgres-net:
-    name: postgres-net
+  default:
+    name: default-net
     driver: bridge
 
 volumes:
@@ -19,19 +13,23 @@ services:
   cache:
     image: redis
     restart: always
-    networks:
-      - cache-net
     ports:
       - "6379:6379"
     command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     volumes:
       - cache:/data
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: bitnami/elasticsearch
+    ports:
+      - 9300:9300
+      - 9200:9200
+
   zookeeper:
     image: zookeeper:3.7.0
     container_name: zookeeper
     restart: "no"
-    networks:
-      - kafka-net
     ports:
       - "2181:2181"
 
@@ -39,8 +37,6 @@ services:
     image: obsidiandynamics/kafka
     container_name: kafka
     restart: "no"
-    networks:
-      - kafka-net
     ports:
       - "9092:9092"
     environment:
@@ -58,8 +54,6 @@ services:
     image: obsidiandynamics/kafdrop
     container_name: kafdrop
     restart: "no"
-    networks:
-      - kafka-net
     ports:
       - "9000:9000"
     environment:
@@ -68,21 +62,16 @@ services:
       - "kafka"
 
   ms-job-seekers:
-    image: aymenzitouni/ms-job-seekers
+    image: aymenzitouni/ms-job-seekers:latest
     container_name: e-recruitment-ms-job-seekers
     restart: always
-    networks:
-      - kafka-net
-
     environment:
       spring.kafka.consumer.bootstrap-servers: "kafka:29092"
       SPRING_DATASOURCE_URL: ${DATABASE_MS_JOB_SEEKERS_URL}
       SPRING_DATASOURCE_USERNAME: ${DATABASE_MS_JOB_SEEKERS_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DATABASE_MS_JOB_SEEKERS_PASSWORD}
-
     ports:
       - "8090:8090"
-
     depends_on:
       - "kafka"
       - "kafdrop"
@@ -90,7 +79,7 @@ services:
 
   e-recruitment-ms-auth:
     container_name: e-recruitment-ms-auth
-    image: aymenzitouni/ms-auth:neoxs
+    image: aymenzitouni/ms-auth:latest
     depends_on:
       - "cache"
       - "zookeeper"
@@ -107,9 +96,17 @@ services:
       REDIS_USERNAME: ${REDIS_USERNAME}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       KAFKA_HOST: kafka:29092
-    networks:
-      - kafka-net
-      - cache-net
     ports:
       - "5000:5000"
     restart: always
+
+  ms-nomenclatures:
+    container_name: ms-nomenclature
+    image: aymenzitouni/ms-nomenclatures:latest
+
+    depends_on:
+      - "elasticsearch"
+    ports:
+      - 6001:6000
+    environment:
+      - ELASTIC_URL=http://elasticsearch:9200
