@@ -61,6 +61,22 @@ services:
     depends_on:
       - "kafka"
 
+  # ---------------------------------- microservices ----------------------------------
+
+  ms-employers:
+    image: aymenzitouni/ms-employers:latest
+    container_name: e-recruitment-ms-employers
+    restart: always
+    environment:
+      spring.kafka.consumer.bootstrap-servers: "kafka:29092"
+
+    ports:
+      - "8090:8090"
+    depends_on:
+      - "kafka"
+      - "kafdrop"
+      - "zookeeper"
+
   ms-job-seekers:
     image: aymenzitouni/ms-job-seekers:latest
     container_name: e-recruitment-ms-job-seekers
@@ -70,6 +86,7 @@ services:
       SPRING_DATASOURCE_URL: ${DATABASE_MS_JOB_SEEKERS_URL}
       SPRING_DATASOURCE_USERNAME: ${DATABASE_MS_JOB_SEEKERS_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DATABASE_MS_JOB_SEEKERS_PASSWORD}
+
     ports:
       - "8090:8090"
     depends_on:

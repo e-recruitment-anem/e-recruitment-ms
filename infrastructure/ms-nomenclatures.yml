@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-nomenclatures
+spec:
+  selector:
+    matchLabels:
+      app: ms-nomenclatures
+  template:
+    metadata:
+      labels:
+        app: ms-nomenclatures
+    spec:
+      containers:
+        - name: ms-nomenclatures
+          image: aymenzitouni/ms-nomenclatures:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 6000
+          env:
+            - name: ELASTIC_URL
+              value: "http://elasticsearch"
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-nomenclatures-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: ms-nomenclatures
+  ports:
+    - port: 6000
+      targetPort: 6000

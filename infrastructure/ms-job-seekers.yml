@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-job-seekers
+spec:
+  selector:
+    matchLabels:
+      app: ms-job-seekers
+  template:
+    metadata:
+      labels:
+        app: ms-job-seekers
+    spec:
+      containers:
+        - name: ms-job-seekers
+          image: aymenzitouni/ms-job-seekers:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8090
+          env:
+            - name: spring.kafka.consumer.bootstrap-servers
+              value: "kafka"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://ec2-54-147-33-38.compute-1.amazonaws.com:5432/detkc9trf1mvm2"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "fryabpkvotxydw"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "b52f00ea1f1c685a1aae205f7b917f82c54f54891e6e829d9047e5f060c4e728"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-job-seekers
+spec:
+  type: LoadBalancer
+  selector:
+    app: ms-job-seekers
+  ports:
+    - port: 80
+      targetPort: 8090
