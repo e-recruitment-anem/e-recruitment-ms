@@ -13,13 +13,18 @@ spec:
     spec:
       containers:
         - name: zookeeper
-          image: zookeeper
+          image: bitnami/zookeeper:latest
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
+          env:
+            - name: ALLOW_ANONYMOUS_LOGIN
+              value: "yes"
           ports:
             - containerPort: 2181
+
+      # restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service

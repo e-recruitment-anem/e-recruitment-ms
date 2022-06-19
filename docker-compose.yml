@@ -71,7 +71,7 @@ services:
       spring.kafka.consumer.bootstrap-servers: "kafka:29092"
 
     ports:
-      - "8090:8090"
+      - "8060:8090"
     depends_on:
       - "kafka"
       - "kafdrop"
